@@ -1,0 +1,8 @@
+services:
+  dailypulse:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./content:/app/content
+    command: ["--test", "--type", "quote"]
