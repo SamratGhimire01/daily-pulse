@@ -1,0 +1,10 @@
+[Unit]
+Description=Run DailyPulse quote generation daily around 07:00
+
+[Timer]
+OnCalendar=*-*-* 07:00:00
+RandomizedDelaySec=3600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

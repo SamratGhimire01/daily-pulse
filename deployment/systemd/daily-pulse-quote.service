@@ -1,0 +1,11 @@
+[Unit]
+Description=DailyPulse - generate morning quote
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Edit these two lines to match where you cloned the repo.
+WorkingDirectory=%h/daily-pulse
+ExecStart=%h/daily-pulse/.venv/bin/python -m src.main --type quote
+EnvironmentFile=%h/daily-pulse/.env

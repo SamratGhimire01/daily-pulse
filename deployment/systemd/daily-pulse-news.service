@@ -1,0 +1,10 @@
+[Unit]
+Description=DailyPulse - generate afternoon tech news digest
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/daily-pulse
+ExecStart=%h/daily-pulse/.venv/bin/python -m src.main --type news
+EnvironmentFile=%h/daily-pulse/.env

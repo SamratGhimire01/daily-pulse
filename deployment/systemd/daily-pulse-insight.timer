@@ -1,0 +1,10 @@
+[Unit]
+Description=Run DailyPulse insight generation daily around 19:00
+
+[Timer]
+OnCalendar=*-*-* 19:00:00
+RandomizedDelaySec=3600
+Persistent=true
+
+[Install]
+WantedBy=timers.target
