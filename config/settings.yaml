@@ -4,7 +4,7 @@ project:
 # Model used for content generation. Check https://ai.google.dev/gemini-api/docs/models
 # for the current list of available models and update if needed.
 ai:
-  model: "gemini-flash-latest"
+  model: "gemini-flash-lite-latest"
 
 schedule:
   morning:
