@@ -14,7 +14,6 @@ _CONFIGURED = False
 
 def get_logger(name: str = "daily_pulse") -> logging.Logger:
     global _CONFIGURED
-    logger = logging.getLogger(name)
 
     if not _CONFIGURED:
         handler = logging.StreamHandler(stream=sys.stdout)
@@ -24,10 +23,12 @@ def get_logger(name: str = "daily_pulse") -> logging.Logger:
         )
         handler.setFormatter(formatter)
 
-        root = logging.getLogger("daily_pulse")
+        # Attach to the real root logger so every module logger (each named
+        # after its own __name__, e.g. "src.main", "src.content.quote_generator")
+        # propagates up to it and actually gets printed.
+        root = logging.getLogger()
         root.setLevel(logging.INFO)
         root.addHandler(handler)
-        root.propagate = False
         _CONFIGURED = True
 
-    return logger
+    return logging.getLogger(name)

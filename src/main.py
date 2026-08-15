@@ -22,9 +22,16 @@ from src.content import insight_generator, news_generator, quote_generator
 from src.github.git_manager import GitManager, GitManagerError
 from src.news.rss_reader import RSSError
 from src.scheduler.scheduler import run_forever
+from src.utils.helpers import content_filename
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+CONTENT_DIR_ATTR = {
+    "quote": "quotes_dir",
+    "news": "news_dir",
+    "insight": "insights_dir",
+}
 
 GENERATORS = {
     "quote": quote_generator,
@@ -80,8 +87,16 @@ def run_type(content_type: str, force: bool, test_mode: bool, day: date | None =
         return 1
 
     if path is None:
-        # Duplicate prevention already logged the reason.
-        return 0
+        # Generation was skipped because today's post already exists (duplicate
+        # prevention already logged why). That file might still be sitting there
+        # uncommitted though — e.g. created by an earlier --test run — so fall
+        # back to it and continue on to the git step instead of exiting early.
+        directory = getattr(settings, CONTENT_DIR_ATTR[content_type])
+        path = content_filename(directory, day)
+        if not path.exists():
+            logger.error("Expected existing file not found at %s", path)
+            return 1
+        logger.info("Reusing already-generated file: %s", path)
 
     if test_mode:
         logger.info("Test mode: skipping git commit/push. File left at %s", path)
