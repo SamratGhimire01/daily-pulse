@@ -1,0 +1,28 @@
+[project]
+name = "daily-pulse"
+version = "0.1.0"
+description = "Automated AI-generated daily Markdown posts, committed to GitHub on a schedule."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "google-genai>=1.0.0",
+    "feedparser>=6.0.11",
+    "PyYAML>=6.0.1",
+    "python-dotenv>=1.0.1",
+    "GitPython>=3.1.43",
+    "tenacity>=8.2.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.14.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

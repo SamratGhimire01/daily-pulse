@@ -1,0 +1,40 @@
+project:
+  name: DailyPulse
+
+# Model used for content generation. Check https://ai.google.dev/gemini-api/docs/models
+# for the current list of available models and update if needed.
+ai:
+  model: "gemini-2.5-flash"
+
+schedule:
+  morning:
+    enabled: true
+    start: "07:00"
+    end: "08:00"
+  afternoon:
+    enabled: true
+    start: "12:00"
+    end: "13:00"
+  evening:
+    enabled: true
+    start: "19:00"
+    end: "20:00"
+
+content:
+  max_words: 400
+  quotes_dir: "content/quotes"
+  news_dir: "content/news"
+  insights_dir: "content/insights"
+
+github:
+  branch: main
+
+news:
+  max_articles: 3
+  # Keep this list configurable — add/remove reputable tech RSS feeds as you like.
+  feeds:
+    - "https://hnrss.org/frontpage"
+    - "https://www.theverge.com/rss/index.xml"
+    - "https://techcrunch.com/feed/"
+    - "https://www.wired.com/feed/rss"
+    - "https://feeds.arstechnica.com/arstechnica/index"
