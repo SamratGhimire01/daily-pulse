@@ -6,19 +6,19 @@ name: DailyPulse
 # (it skips generation if today's file already exists), so a late or
 # slightly-off-time run is safe and will never create duplicate content.
 #
-# Cron below targets each window's start time in UTC. Adjust for your
-# timezone, or add a random `sleep` step below if you want jitter similar
-# to the local scheduler.
+# Cron times below are in UTC and set to land at ~07:00 / ~12:00 / ~19:00
+# Nepal time (UTC+5:45). If you're in a different timezone, recompute:
+# subtract your UTC offset from your desired local time to get the UTC cron time.
 
 on:
   schedule:
-    - cron: "0 7 * * *"   # ~morning window start (UTC)
-    - cron: "0 12 * * *"  # ~afternoon window start (UTC)
-    - cron: "0 19 * * *"  # ~evening window start (UTC)
+    - cron: "15 1 * * *"   # ~07:00 Nepal time -> quote
+    - cron: "15 6 * * *"   # ~12:00 Nepal time -> news
+    - cron: "15 13 * * *"  # ~19:00 Nepal time -> insight
   workflow_dispatch:
     inputs:
       type:
-        description: "Content type to generate (quote/news/insight). Leave blank to auto-pick by current UTC hour."
+        description: "Content type to generate (quote/news/insight). Leave blank to auto-pick from the triggering schedule."
         required: false
         default: ""
       force:
@@ -52,14 +52,12 @@ jobs:
           if [ -n "${{ github.event.inputs.type }}" ]; then
             echo "type=${{ github.event.inputs.type }}" >> "$GITHUB_OUTPUT"
           else
-            HOUR=$(date -u +%H)
-            if [ "$HOUR" -lt 10 ]; then
-              echo "type=quote" >> "$GITHUB_OUTPUT"
-            elif [ "$HOUR" -lt 16 ]; then
-              echo "type=news" >> "$GITHUB_OUTPUT"
-            else
-              echo "type=insight" >> "$GITHUB_OUTPUT"
-            fi
+            case "${{ github.event.schedule }}" in
+              "15 1 * * *")  echo "type=quote"   >> "$GITHUB_OUTPUT" ;;
+              "15 6 * * *")  echo "type=news"    >> "$GITHUB_OUTPUT" ;;
+              "15 13 * * *") echo "type=insight" >> "$GITHUB_OUTPUT" ;;
+              *)             echo "type=quote"   >> "$GITHUB_OUTPUT" ;;
+            esac
           fi
 
       - name: Configure git identity
