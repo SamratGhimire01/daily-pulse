@@ -64,8 +64,8 @@ jobs:
 
       - name: Configure git identity
         run: |
-          git config user.name "DailyPulse Bot"
-          git config user.email "dailypulse-bot@users.noreply.github.com"
+          git config user.name "Samrat Ghimire"
+          git config user.email "108140934+SamratGhimire01@users.noreply.github.com"
 
       - name: Generate and push content
         env:
