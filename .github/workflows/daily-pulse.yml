@@ -68,6 +68,12 @@ jobs:
       - name: Generate and push content
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # No .env file exists on this runner (it's git-ignored), so the app's
+          # own settings loader would otherwise fall back to its default bot
+          # identity here and silently override the step above. Passing these
+          # explicitly keeps both steps in agreement.
+          GIT_AUTHOR_NAME: "Samrat Ghimire"
+          GIT_AUTHOR_EMAIL: "108140934+SamratGhimire01@users.noreply.github.com"
         run: |
           FORCE_FLAG=""
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
