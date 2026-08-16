@@ -1,26 +1,50 @@
-# DailyPulse
+# 📰 DailyPulse
 
-DailyPulse is a small, open-source automation that generates three short, useful Markdown
-posts a day — a quote + reflection, a real tech news digest, and a developer/AI insight — and
-commits each one to a GitHub repository. It's meant to feel like a small personal developer
-journal that grows on its own, not a content farm.
+<p align="center">
+  <b>A small, self-running bot that writes your daily developer journal for you.</b><br>
+  Real quotes • Real news • Real insight — three commits a day, fully automated
+</p>
 
-## Features
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python">
+  <img src="https://img.shields.io/badge/Gemini-API-orange?style=for-the-badge&logo=google">
+  <img src="https://img.shields.io/badge/GitHub_Actions-Automated-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge">
+  <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge">
+</p>
 
-- **Three post types a day**: morning quote, afternoon tech news digest, evening dev insight.
-- **Real content only**: news is summarized from actual RSS articles (no invented stories);
-  quotes use real, attributed quotations or are clearly labeled as original thoughts if no
-  confident attribution exists.
-- **Randomized timing** within configurable windows (e.g. 07:00–08:00) instead of a fixed
-  second, so it doesn't look robotic.
-- **Duplicate-safe**: skips generation if today's post already exists, so retries, reruns, or
-  slightly-late scheduler ticks never create duplicate content.
-- **Clear logging**, no raw tracebacks for expected operational failures (bad API key, network
-  issues, empty RSS feed, etc).
-- **Multiple deployment options**: GitHub Actions (recommended for the always-on automated
-  version), systemd timers or cron for local scheduling, and Docker for a portable runtime.
+<p align="center">
+  <a href="#-overview">Overview</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#%EF%B8%8F-installation">Installation</a> •
+  <a href="#-scheduling">Scheduling</a> •
+  <a href="#-why-this-project-matters">Why It Matters</a> •
+  <a href="#-contact">Contact</a>
+</p>
 
-## Architecture
+---
+
+## 📖 Overview
+
+**DailyPulse** is an open-source automation that generates three short, genuinely useful Markdown posts every day — a quote with reflection, a real tech news digest, and a developer/AI insight — and commits each one to a GitHub repository on its own, no human required.
+
+It's built to feel like a small personal developer journal that quietly grows on its own over time — not a content farm, not spam, not fabricated filler. Every quote is either a real, attributed quotation or clearly labeled as an original thought. Every news post is grounded in a real RSS article with a real source link. Nothing here is invented.
+
+---
+
+## ✨ Features
+
+- 🌅 **Three post types a day** — morning quote, afternoon tech news digest, evening dev insight
+- 🎯 **Real content only** — news is summarized strictly from actual RSS articles (no invented stories); quotes use real, attributed quotations or are clearly labeled as original thoughts when no confident attribution exists
+- 🎲 **Randomized timing** within configurable windows (e.g. 07:00–08:00) instead of a suspiciously exact second, so it doesn't look robotic
+- 🔁 **Duplicate-safe** — skips generation if today's post already exists, so retries, reruns, or a slightly-late scheduler tick never create duplicate content
+- 📋 **Clear logging**, no raw tracebacks for expected operational failures (bad API key, network issues, empty RSS feed, etc.)
+- ☁️ **Multiple deployment options** — GitHub Actions (recommended, fully hands-off), systemd timers or cron for local scheduling, and Docker for a portable runtime
+
+---
+
+## 🏗️ Architecture
 
 ```text
 Scheduler (GitHub Actions / systemd / local loop)
@@ -38,17 +62,23 @@ Content Generator (quote / news / insight)
    git add → git commit → git push
 ```
 
-## Tech stack
+---
 
-- **Python 3.11+**
-- **[google-genai](https://pypi.org/project/google-genai/)** — official Gemini API SDK
-- **feedparser** — RSS parsing
-- **GitPython** — git automation
-- **PyYAML** + **python-dotenv** — configuration
-- **tenacity** — retries for transient API failures
-- **pytest** — test suite (all network/AI/Git calls are mocked)
+## 🧰 Built With
 
-## Project structure
+| Tool | Role |
+|---|---|
+| **Python 3.11+** | Core language |
+| **[google-genai](https://pypi.org/project/google-genai/)** | Official Gemini API SDK — writes every post |
+| **feedparser** | RSS parsing for the news digest |
+| **GitPython** | Automates add / commit / push |
+| **PyYAML + python-dotenv** | Configuration — settings vs. secrets, kept separate |
+| **tenacity** | Retries transient API failures automatically |
+| **pytest** | Full test suite — all network/AI/Git calls mocked |
+
+---
+
+## 📁 Project Structure
 
 ```text
 daily-pulse/
@@ -85,7 +115,9 @@ daily-pulse/
 └── .github/workflows/daily-pulse.yml
 ```
 
-## Example generated output
+---
+
+## 📸 Example Generated Output
 
 **Quote** (`content/quotes/2026-08-15.md`):
 
@@ -123,17 +155,35 @@ Why caching matters in web applications
 ...
 ```
 
-## Installation
+---
+
+## ⚙️ Installation
+
+Follow these in order — every command is copy-pasteable.
+
+### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/SamratGhimire01/daily-pulse.git
 cd daily-pulse
+```
 
+### 2. Create and activate a virtual environment
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
+```
 
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+### 4. Set up your secrets
+
+```bash
 cp .env.example .env
 ```
 
@@ -143,46 +193,49 @@ Then open `.env` and fill in:
 GEMINI_API_KEY=your-key-here
 GITHUB_REPO_URL=https://github.com/yourname/daily-pulse.git
 GITHUB_TOKEN=            # only needed for local HTTPS pushes; GitHub Actions uses its own token
-GIT_AUTHOR_NAME=DailyPulse Bot
-GIT_AUTHOR_EMAIL=dailypulse-bot@users.noreply.github.com
+GIT_AUTHOR_NAME=Your Name
+GIT_AUTHOR_EMAIL=your-email@example.com
 ```
 
-### Getting a Gemini API key
+> 🔑 Get a free Gemini API key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey). Never commit this key — it belongs only in your local `.env` or a GitHub Actions secret.
 
-Create one for free at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
-Never commit this key — it belongs only in your local `.env` or in a GitHub Actions secret.
+### 5. Verify everything works
 
-## Local usage
+```bash
+pytest
+```
 
-Test mode generates a file but never commits or pushes:
+All 34 tests should pass — they run entirely offline (Gemini, RSS, and Git are all mocked), so this is safe to run before touching any real API key or repo.
 
+---
+
+## ▶️ Local Usage
+
+**Test mode** — generates a file but never commits or pushes:
 ```bash
 python -m src.main --test --type quote
 ```
 
-Real run (generates, commits, and pushes):
-
+**Real run** — generates, commits, and pushes:
 ```bash
 python -m src.main --type quote
 python -m src.main --type news
 python -m src.main --type insight
 ```
 
-Force regeneration even if today's post already exists (useful for testing):
-
+**Force regeneration**, even if today's post already exists:
 ```bash
 python -m src.main --force --type quote
 ```
 
-Run the local randomized scheduler (keeps running, picks a random time inside each configured
-window every day — only useful if you want a long-running local process instead of GitHub
-Actions/systemd):
-
+**Local randomized scheduler** — keeps running, picks a random time inside each configured window every day (only needed if you want a long-running local process instead of GitHub Actions/systemd):
 ```bash
 python -m src.main --schedule
 ```
 
-## Configuration
+---
+
+## 🔧 Configuration
 
 Non-secret settings live in `config/settings.yaml`:
 
@@ -204,29 +257,23 @@ news:
     # add/remove reputable tech RSS feeds here
 ```
 
-Secrets (API keys, tokens) always live in `.env`, which is git-ignored, never in
-`settings.yaml`.
+Secrets (API keys, tokens) always live in `.env`, which is git-ignored — never in `settings.yaml`.
 
-## Scheduling
+---
 
-DailyPulse does **not** run a single 24/7 process by default — pick one of these:
+## ⏰ Scheduling
 
-### Option A — GitHub Actions (recommended)
+DailyPulse doesn't run a single 24/7 process by default — pick one:
 
-`.github/workflows/daily-pulse.yml` runs on a cron schedule and pushes directly from the
-Actions runner. Add `GEMINI_API_KEY` as a repository secret
-(**Settings → Secrets and variables → Actions**). No `GITHUB_TOKEN` secret is needed — Actions
-provides its own scoped token automatically (the workflow already requests
-`permissions: contents: write`).
+### Option A — GitHub Actions ⭐ *(recommended)*
 
-> ⚠️ GitHub Actions' `schedule` cron is best-effort and can run a few minutes late (more under
-> heavy load) — GitHub does not guarantee the exact minute. This is fine here because every run
-> is idempotent: if today's post already exists, it's skipped rather than duplicated.
+`.github/workflows/daily-pulse.yml` runs on a cron schedule and pushes directly from the Actions runner. Add `GEMINI_API_KEY` as a repository secret (**Settings → Secrets and variables → Actions**). No `GITHUB_TOKEN` secret needed — Actions provides its own scoped token automatically.
+
+> ⚠️ GitHub Actions' `schedule` cron is best-effort and can run a few minutes late under load — GitHub doesn't guarantee the exact minute. This is safe here because every run is idempotent: if today's post already exists, it's skipped rather than duplicated.
 
 ### Option B — systemd timers (local Linux machine)
 
-Three independent service+timer pairs live in `deployment/systemd/`, one per post type, each
-with `RandomizedDelaySec` for jitter within the window:
+Three independent service+timer pairs live in `deployment/systemd/`, one per post type, each with `RandomizedDelaySec` for jitter within the window:
 
 ```bash
 mkdir -p ~/.config/systemd/user
@@ -246,26 +293,19 @@ systemctl --user list-timers
 0 19 * * * cd ~/daily-pulse && .venv/bin/python -m src.main --type insight >> logs/insight.log 2>&1
 ```
 
-Add `sleep $((RANDOM % 3600))` before the command in each line for random jitter within the
-hour.
+Add `sleep $((RANDOM % 3600))` before each command for random jitter within the hour.
 
-## Render deployment
+### Render deployment
 
-Render's [Cron Jobs](https://render.com/docs/cronjobs) service fits this project's architecture
-well — one job per post type, each running `python -m src.main --type <quote|news|insight>` on
-its own schedule, with `GEMINI_API_KEY` set as a Render environment variable. This is a
-reasonable alternative to GitHub Actions if you'd rather keep scheduling off GitHub. Check
-Render's current cron job docs/pricing before relying on it, since details change.
+Render's [Cron Jobs](https://render.com/docs/cronjobs) fits this architecture well — one job per post type, each running `python -m src.main --type <quote|news|insight>` on its own schedule, with `GEMINI_API_KEY` as a Render environment variable. A reasonable alternative if you'd rather keep scheduling off GitHub.
 
-## Hugging Face
+### 🤗 About Hugging Face
 
-**Do not use Hugging Face Spaces as the scheduler** — Spaces are built for hosting interactive
-apps/demos, not for guaranteed 24/7 cron execution, and content generation could silently stop
-if the Space sleeps. If you want a Hugging Face presence for this project, use a Space only for
-a read-only dashboard that displays recently generated posts — never for the actual scheduled
-generation.
+**Don't use Hugging Face Spaces as the scheduler** — Spaces are built for hosting interactive demos, not guaranteed 24/7 cron execution, and generation could silently stop if the Space sleeps. If you want a Hugging Face presence, use a Space only for a read-only dashboard displaying recently generated posts — never for actual scheduled generation.
 
-## Docker
+---
+
+## 🐳 Docker
 
 ```bash
 docker build -t dailypulse .
@@ -278,42 +318,75 @@ or with Docker Compose:
 docker compose run --rm dailypulse
 ```
 
-The image installs `git` so GitPython can shell out to it; mount your real repo directory (not
-just `content/`) if you want commits/pushes to happen from inside the container.
+The image installs `git` so GitPython can shell out to it; mount your real repo directory (not just `content/`) if you want commits/pushes to happen from inside the container.
 
-## Testing
+---
+
+## 🧪 Testing
 
 ```bash
 pytest
 ```
 
-All tests run offline: the Gemini client, RSS feeds, and git push are all mocked (git
-add/commit tests use a real local throwaway repo + local bare "remote", never GitHub). No API
-credits are consumed and nothing is pushed anywhere real.
+All tests run offline: the Gemini client, RSS feeds, and git push are all mocked (Git tests use a real local throwaway repo + a local bare "remote" — never GitHub). No API credits consumed, nothing pushed anywhere real.
 
-## Troubleshooting
+---
+
+## 🩺 Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
 | `GEMINI_API_KEY is not set` | Copy `.env.example` to `.env` and add your key |
 | `No 'origin' remote configured` | Run `git remote add origin <your-repo-url>` |
-| `Git push failed` | Check your GitHub auth (SSH key, or `GITHUB_TOKEN` for HTTPS), and that the branch in `config/settings.yaml` (`github.branch`) matches your default branch |
+| `Git push failed` | Check your GitHub auth (SSH key, or `GITHUB_TOKEN` for HTTPS), and that `github.branch` in `config/settings.yaml` matches your default branch |
 | `All configured RSS feeds failed to load` | Check your network, or that the feed URLs in `settings.yaml` are still valid |
 | Post skipped / no file created | Today's post already exists — use `--force` to regenerate |
+| `503` from Gemini | Google's own servers are temporarily overloaded — retries handle most cases automatically; if it persists, try `gemini-flash-lite-latest` in `config/settings.yaml` |
 
-## Security
+---
 
-- `.env` is git-ignored and must never be committed.
-- `.env.example` contains placeholders only.
-- API keys and tokens are never logged.
-- GitHub Actions uses repository **Secrets**, not plaintext workflow values.
+## 🔒 Security
 
-## Contributing
+- `.env` is git-ignored and must never be committed
+- `.env.example` contains placeholders only
+- API keys and tokens are never logged
+- GitHub Actions uses repository **Secrets**, not plaintext workflow values
 
-Issues and pull requests are welcome. Keep changes in the spirit of the project: small,
-readable, and honest about what it does — this is intentionally a small automation, not a
-platform.
+---
 
-## License
+## 🎯 Why This Project Matters
+
+This isn't just "call an API and post the result." DailyPulse demonstrates:
+
+- 🤖 **Real automation engineering** — a full pipeline from AI generation → validation → git → CI, not a one-off script
+- 🧱 **Idempotent design** — safe to rerun, safe to retry, safe against GitHub Actions' inexact cron timing, by construction
+- 🛡️ **Honest content generation** — explicit guardrails against fabricated quotes, invented news, and hallucinated statistics
+- ⚙️ **Real CI/CD** — a working GitHub Actions workflow that authenticates, generates, and pushes on a real schedule, with matching identity across local and CI environments
+- 🧪 **Tested, not just written** — a full offline test suite covering config, generation, RSS parsing, and Git operations
+
+This is the kind of project that shows genuine ability to ship and operate real automated systems — not just write a script that works once on your own machine.
+
+---
+
+## 🤝 Contributing
+
+Issues and pull requests are welcome. Keep changes in the spirit of the project: small, readable, and honest about what it does — this is intentionally a small automation, not a platform.
+
+---
+
+## 📬 Contact
+
+**Samrat Ghimire**
+
+🔗 GitHub: [github.com/SamratGhimire01](https://github.com/SamratGhimire01)
+🔗 Portfolio: [samratghimire01.com.np](https://samratghimire01.com.np)
+
+---
+
+## 📄 License
 
 MIT — see [LICENSE](LICENSE).
+
+<p align="center">
+  ⭐ If this project is useful to you, consider giving it a star.
+</p>
